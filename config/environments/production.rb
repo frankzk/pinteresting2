@@ -82,17 +82,18 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
     #Required for Heroku
-  config.action_mailer.default_url_options = { :host => 'http://arcane-shore-2097.herokuapp.com/'}
+  config.action_mailer.default_url_options = { :host => 'http://arcane-shelf-3404.herokuapp.com/'}
 
   #Sets Paperclip to upload images to Amazon S3
 Paperclip::Attachment.default_options.merge!({
     storage: :s3,
     s3_credentials: {
-      access_key_id: ENV['AWS_ACCESS_KEY_ID'],
-      secret_access_key: ENV['AWS_SECRET_ACCESS_KEY']
-    },
-    bucket: ENV['S3_BUCKET_NAME']
-})
-
+        access_key_id: ENV['S3_KEY'],
+        secret_access_key: ENV['S3_SECRET'],
+        bucket: "#{ENV['S3_BUCKET']}-#{Rails.env}"
+        },
+    url: ":s3_domain_url",
+    path: "/:class/:attachment/:id_partition/:style/:filename"
+    })
 
 end
